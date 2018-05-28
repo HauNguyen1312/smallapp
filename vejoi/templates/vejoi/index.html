@@ -1,37 +1,8 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>index</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
-</head>
-
-<body style="background-color:rgb(88,197,246);"><img src="assets/img/Log.png" style="width:584px;height:371px;">
-   	<div class="float-right" style="width:407px;height:122px;padding-top:50px ;padding-right: 50px">
-    <form>
-    Username: <input class="form-control" type="email">
-    Password: <input class="form-control" type="password">
-    <br>
-    <button class="btn btn-primary" type="button">Sign in</button>
+{% extends 'vejoi/base.html' %}
+{% block title %} Index {% endblock %}
+{% block content %} 
+    <form action = {% url 'login' %}>
+        {% csrf_token %} 
+        <input type= "submit" value = "Login" name = "login"/>
     </form>
-    </div>
-    <div class="float-right" style="width:407px;height:120px;padding-bottom:400px ;padding-right: 50px">
-    <form>
-    Username: <input class="form-control" type="text">
-    Password: <input class="form-control" type="password">
-    Email: <input class="form-control" type="email">
-    Firstname: <input class="form-control" type="text">
-    Lastname: <input class="form-control" type="text">
-    <br>
-    <button class="btn btn-primary" type="button">Sign up</button>
-    <br>
-    </form>
-    </div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+{% endblock %} 
