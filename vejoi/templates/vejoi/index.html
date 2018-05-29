@@ -1,11 +1,11 @@
 {% extends 'vejoi/base.html' %}
- {% block title %} Index {% endblock %}
+{% block title %} Index {% endblock %}
 {% block content %}
     <form action={% url 'login' %} method="POST">
          {% csrf_token %}
         <input type="submit" value="Login" name="login" />
     </form>
-    <form action={% url 'signup' %} method="POST">
+    <form action={% url 'signup' %} method="GET">
         {% csrf_token %}
         <input type="submit" value="Signup" name="signup"/>
     </form>
