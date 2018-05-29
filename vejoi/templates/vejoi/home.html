@@ -1,8 +1,33 @@
-{% extends 'vejoi/base.html' %}
-{% block title %} Home {% endblock%}
+{% extends 'vejoi/base.html' %} 
+{% block title %} Home {% endblock%} 
 {% block content %}
-    <h1>This is home page</h1>
-    {% for q in object_list %}
-    {{q}}
-    {% endfor %}
+<h1>Hello <i style="color:red">{{user}}</i></h1>
+{% for q in object_list %}
+    {% if q.answer == "" %}
+        <form action="{% url 'answer' q.pk %}" method="POST">
+        {% csrf_token %}
+        {{ q.text }}
+        {{ form.as_p }}
+        <button>Submit</button>
+        </form>
+    {% endif %}
+{% endfor %}
+<hr/>
+{% for q in object_list %}
+    {% if q.answer != '' %}
+    <table>
+            <tr>
+                <th>@{{ q.name }}</th>
+            </tr>
+            <tr>
+                <td>Question</td>
+                <td>{{ q.text }}</td>
+            </tr>
+            <tr>
+                <td>Answer</td>
+                <td>{{ q.answer }}</td>
+            </tr>
+        </table>
+    {% endif %}
+{% endfor %}
 {% endblock%}

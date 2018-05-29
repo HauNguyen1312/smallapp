@@ -2,6 +2,7 @@ from django import forms
 
 from . import models
 
+
 class SignUpForm(forms.ModelForm):
     fullname = forms.CharField(label='Full name')
     password = forms.CharField(
@@ -21,7 +22,13 @@ class SignUpForm(forms.ModelForm):
         self.instance.first_name = first_name
         self.instance.last_name = last_name
 
+
 class AskingForm(forms.ModelForm):
-    asker = forms.CharField()
-    responder = forms.CharField()
-    
+    class Meta:
+        model = models.Question
+        fields = ['name', 'text']
+
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = models.Question
+        fields = ['answer']
