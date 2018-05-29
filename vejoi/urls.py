@@ -6,4 +6,5 @@ urlpatterns= [
 	path('',views.index, name = 'askme'),
 	path('login/', ath_view.login, {'template_name':'vejoi/login.html'}, name = 'login'),
 	path('home/', views.home, name = 'home'),
+	path('signup/', views.signup, name = 'signup'),
 ]
