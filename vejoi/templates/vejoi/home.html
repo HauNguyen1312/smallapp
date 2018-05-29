@@ -2,4 +2,7 @@
 {% block title %} Home {% endblock%}
 {% block content %}
     <h1>This is home page</h1>
+    {% for q in object_list %}
+    {{q}}
+    {% endfor %}
 {% endblock%}

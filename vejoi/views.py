@@ -26,5 +26,5 @@ class HomeView(ListView):
     def get_queryset(self):
         user = self.request.user
         if user.is_authenticated:
-            return Question.objects.get(responder_id_id = user.id )
+            return Question.objects.filter(responder_id = user )
             
