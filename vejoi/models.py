@@ -7,7 +7,7 @@ class Question(BaseModel):
 	name = models.CharField('Name of asker', max_length=255, default = '')
 	text = models.TextField('Question')
 	answer = models.TextField(blank=True, null=True)
-	responder_id = models.ForeignKey(
+	responder = models.ForeignKey(
 		User,
 		on_delete=models.CASCADE, 
 		related_name='responder')
