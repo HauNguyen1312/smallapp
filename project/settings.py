@@ -23,7 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-x&#2zyc%e=!xte07zxz)hle7-!7lei@eh*_8@1qj^bxg&(kkv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('ENV', 'production') != 'production'
+#DEBUG = os.getenv('ENV', 'production') != 'production'
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -122,7 +123,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS =[
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static/')
 ]
 
 LOGIN_REDIRECT_URL = '/home/'
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")
