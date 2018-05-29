@@ -1,7 +1,9 @@
 from django.shortcuts import render
-
+from django.contrib.auth import get_user_model
+from django.contrib.auth.views import LoginView, LogoutView
+from django.views.generic import DetailView, ListView
+from vejoi.models import Question
 from . import forms
-
 
 def index(request):
     return render(request, 'vejoi/index.html')
@@ -15,8 +17,11 @@ def signup(request):
         'form': form
     })
 
-def login(request):
-    return render(request, 'vejoi/login.html')
+class HomeView(ListView):
+    template_name = 'vejoi/home.html'
 
-def home(request):
-    return render(request, 'vejoi/base.html')
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            return Question.objects.get(responder_id_id = user.id )
+            
