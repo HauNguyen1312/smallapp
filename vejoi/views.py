@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django import http
 
 from . import forms
 
@@ -10,6 +11,7 @@ def signup(request):
     form = forms.SignUpForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         form.save()
+        return http.HttpResponseRedirect('/')
 
     return render(request, 'vejoi/signup.html', {
         'form': form

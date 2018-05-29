@@ -17,6 +17,11 @@ class SignUpForm(forms.ModelForm):
     def clean(self):
         super().clean()
 
-        first_name, last_name = self.data.get('fullname').split(' ')
+        first_name, last_name = str(self.data.get('fullname')).split(' ')
         self.instance.first_name = first_name
         self.instance.last_name = last_name
+
+class AskingForm(forms.ModelForm):
+    asker = forms.CharField()
+    responder = forms.CharField()
+    
