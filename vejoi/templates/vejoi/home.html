@@ -1,8 +1,17 @@
 {% extends 'vejoi/base.html' %}
 {% block title %} Home {% endblock%}
 {% block content %}
-    <h1>This is home page</h1>
-    {% for q in object_list %}
-    {{q}}
-    {% endfor %}
+    {% if user.is_authenticated %}
+        {% for q in object_list %}
+            {{q}}
+            {{q.answer}}
+            <br>
+        {% endfor %}
+
+        <form action={% url 'logout' %} method="GET">
+            {% csrf_token %}
+            <input type="submit" value="Logout" name="logout"/>
+        </form>
+    {% endif %}
+
 {% endblock%}

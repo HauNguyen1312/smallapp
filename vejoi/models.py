@@ -1,6 +1,6 @@
 from project.models import BaseModel
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 
 class Question(BaseModel):
@@ -10,7 +10,7 @@ class Question(BaseModel):
 	responder = models.ForeignKey(
 		User,
 		on_delete=models.CASCADE, 
-		related_name='responder')
+		related_name='questions')
 
 	def __str__(self):
 		return self.text
