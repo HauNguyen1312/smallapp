@@ -7,11 +7,9 @@
         <input name="responder_id" type="hidden" value="{{ object.pk }}"/>
         <button>Submit</button>
     </form>
-
     {% for q in questions %}
         {{q}}
         {{q.answer}}
         <br>
     {% endfor %}  
-
 {% endblock%}

@@ -2,10 +2,11 @@ from django.views.generic import DetailView, ListView, CreateView, FormView, Upd
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import logout, login, authenticate
 from django.urls import reverse, reverse_lazy
 from vejoi.models import Question
 from django import http
-from vejoi.forms import SignUpForm, AskingForm, AnswerForm
+from vejoi.forms import AskingForm, AnswerForm, SignUpForm
 
 
 def index(request):
@@ -16,15 +17,20 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-           form.save()
-        return redirect('/')
+            form.save()
+            return redirect('login')
+        args = {'form': form}
+        return render(request, 'vejoi/signup.html', args)
 
     else:
         form = SignUpForm()
         args = {'form': form}
-        return render(request, 'vejoi/signup.html',args)
+        return render(request, 'vejoi/signup.html', args)
 
 
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 class AnswerView(UpdateView):
     model = Question
@@ -50,14 +56,14 @@ class HomeView(ListView, FormView):
         form.instance.answer = self.request.POST.get('answer')
         form.save()
         return super().form_valid(form)
- 
 
-class AskView(CreateView):  
+
+class AskView(CreateView):
     model = Question
     fields = ['name', 'text']
 
     def get_success_url(self):
-        return reverse('profile', args = [User.objects.get(pk= self.object.responder_id).username])
+        return reverse('profile', args=[User.objects.get(pk=self.object.responder_id).username])
 
     def form_valid(self, form):
         form.instance.responder_id = self.request.POST.get('responder_id')
@@ -73,6 +79,6 @@ class ProfileView(DetailView, FormView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['questions'] = self.get_object().questions.exclude(answer=None).exclude(answer='')
+        context['questions'] = self.get_object().questions.exclude(
+            answer=None).exclude(answer='')
         return context
-

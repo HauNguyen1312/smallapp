@@ -3,7 +3,6 @@
 {% block content %}
     {% if user.is_authenticated %}
         <h1>Hello <i style="color:red">{{user}}</i></h1>
-        <br>
         <form action={% url 'logout' %} method="GET">
                 {% csrf_token %}
                 <input type="submit" value="Logout" name="logout"/>
