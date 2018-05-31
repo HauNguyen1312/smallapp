@@ -1,33 +1,40 @@
 {% extends 'vejoi/base.html' %} 
 {% block title %} Home {% endblock%} 
 {% block content %}
-<h1>Hello <i style="color:red">{{user}}</i></h1>
-{% for q in object_list %}
-    {% if q.answer == "" %}
-        <form action="{% url 'answer' q.pk %}" method="POST">
-        {% csrf_token %}
-        {{ q.text }}
-        {{ form.as_p }}
-        <button>Submit</button>
+    {% if user.is_authenticated %}
+        <h1>Hello <i style="color:red">{{user}}</i></h1>
+        <br>
+        <form action={% url 'logout' %} method="GET">
+                {% csrf_token %}
+                <input type="submit" value="Logout" name="logout"/>
         </form>
+        {% for q in object_list %}
+            {% if not q.answer or q.answer == '' %}
+                <form action="{% url 'answer' q.pk %}" method="POST">
+                {% csrf_token %}
+                {{ q.text }}
+                {{ form.as_p }}
+                <button>Submit</button>
+                </form>
+            {% endif %}
+        {% endfor %}
+        <hr/>
+        {% for q in object_list %}
+            {% if q.answer and q.answer != '' %}
+                <table>
+                    <tr>
+                        <th>@{{ q.name }}</th>
+                    </tr>
+                    <tr>
+                        <td>Question</td>
+                        <td>{{ q.text }}</td>
+                    </tr>
+                    <tr>
+                        <td>Answer</td>
+                        <td>{{ q.answer }}</td>
+                    </tr>
+                </table>
+            {% endif %}
+        {% endfor %}
     {% endif %}
-{% endfor %}
-<hr/>
-{% for q in object_list %}
-    {% if q.answer != '' %}
-    <table>
-            <tr>
-                <th>@{{ q.name }}</th>
-            </tr>
-            <tr>
-                <td>Question</td>
-                <td>{{ q.text }}</td>
-            </tr>
-            <tr>
-                <td>Answer</td>
-                <td>{{ q.answer }}</td>
-            </tr>
-        </table>
-    {% endif %}
-{% endfor %}
 {% endblock%}

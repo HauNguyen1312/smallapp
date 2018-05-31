@@ -1,0 +1,17 @@
+{% extends 'vejoi/base.html' %}
+{% block title %} Profile {% endblock%}
+{% block content %}
+    <form action="{% url 'ask' %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input name="responder_id" type="hidden" value="{{ object.pk }}"/>
+        <button>Submit</button>
+    </form>
+
+    {% for q in questions %}
+        {{q}}
+        {{q.answer}}
+        <br>
+    {% endfor %}  
+
+{% endblock%}

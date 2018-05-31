@@ -1,11 +1,11 @@
-from django.shortcuts import render
-from django.urls import reverse_lazy
-from django.contrib.auth import get_user_model
-from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import DetailView, ListView, CreateView, FormView, UpdateView
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import reverse, reverse_lazy
 from vejoi.models import Question
 from django import http
-from . import forms
+from vejoi.forms import SignUpForm, AskingForm, AnswerForm
 
 
 def index(request):
@@ -13,14 +13,17 @@ def index(request):
 
 
 def signup(request):
-    form = forms.SignUpForm(request.POST or None)
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        return http.HttpResponseRedirect('/')
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+           form.save()
+        return redirect('/')
 
-    return render(request, 'vejoi/signup.html', {
-        'form': form
-    })
+    else:
+        form = SignUpForm()
+        args = {'form': form}
+        return render(request, 'vejoi/signup.html',args)
+
 
 
 class AnswerView(UpdateView):
@@ -33,7 +36,7 @@ class HomeView(ListView, FormView):
     template_name = 'vejoi/home.html'
     model = Question
     fields = ['answer', 'responder']
-    form_class = forms.AnswerForm
+    form_class = AnswerForm
 
     def get_queryset(self):
         user = self.request.user
@@ -47,3 +50,29 @@ class HomeView(ListView, FormView):
         form.instance.answer = self.request.POST.get('answer')
         form.save()
         return super().form_valid(form)
+ 
+
+class AskView(CreateView):  
+    model = Question
+    fields = ['name', 'text']
+
+    def get_success_url(self):
+        return reverse('profile', args = [User.objects.get(pk= self.object.responder_id).username])
+
+    def form_valid(self, form):
+        form.instance.responder_id = self.request.POST.get('responder_id')
+        form.save()
+        return super().form_valid(form)
+
+
+class ProfileView(DetailView, FormView):
+    template_name = 'vejoi/profile.html'
+    slug_field = 'username'
+    model = User
+    form_class = AskingForm
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['questions'] = self.get_object().questions.exclude(answer=None).exclude(answer='')
+        return context
+

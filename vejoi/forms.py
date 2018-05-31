@@ -1,6 +1,7 @@
+from django.contrib.auth import get_user_model
+from . import models
 from django import forms
 
-from . import models
 
 
 class SignUpForm(forms.ModelForm):
@@ -18,9 +19,11 @@ class SignUpForm(forms.ModelForm):
     def clean(self):
         super().clean()
 
-        first_name, last_name = str(self.data.get('fullname')).split(' ')
-        self.instance.first_name = first_name
-        self.instance.last_name = last_name
+        name = str(self.data.get('fullname')).rsplit(' ',)
+        self.instance.first_name = name[0]
+        if len(name)> 1:
+            self.instance.last_name = name[1]
+
 
 
 class AskingForm(forms.ModelForm):
