@@ -3,8 +3,16 @@
 {% block content %}
     <form action="{% url 'ask' %}" method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% if user.is_authenticated %}
+            <label><b>@{{user}}</b></label>
+            <input name="name" type="hidden" value="{{user}}"/>
+            <br>
+            {{form.text}}
+        {% elif not user.is_authenticated %}
+            {{ form.as_p }}
+        {% endif %}
         <input name="responder_id" type="hidden" value="{{ object.pk }}"/>
+        <br>
         <button>Submit</button>
     </form>
     {% for q in questions %}

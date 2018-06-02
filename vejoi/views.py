@@ -1,11 +1,11 @@
-from django.views.generic import DetailView, ListView, CreateView, FormView, UpdateView
-from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth import logout, login, authenticate
+from django.views.generic import DetailView, ListView, CreateView, FormView, UpdateView
+from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
+
 from vejoi.models import Question
-from django import http
 from vejoi.forms import AskingForm, AnswerForm, SignUpForm
 
 
@@ -31,6 +31,7 @@ def signup(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
 
 class AnswerView(UpdateView):
     model = Question
@@ -66,6 +67,7 @@ class AskView(CreateView):
         return reverse('profile', args=[User.objects.get(pk=self.object.responder_id).username])
 
     def form_valid(self, form):
+        form.instance.name = self.request.POST.get('name')
         form.instance.responder_id = self.request.POST.get('responder_id')
         form.save()
         return super().form_valid(form)
