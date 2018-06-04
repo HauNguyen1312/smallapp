@@ -62,9 +62,12 @@
                 <form id="signupNewForm" class="signupForm" action="" method="POST">
                     {% csrf_token %}
                     <div class="inputFormBox">
+                        Username:
                         <div class="inputFormPadding">
                             {{form.username}}
                         </div>
+                        <br>
+                        Password:
                         <div class="inputFormPadding">
                             {{form.password}}
                         </div>
