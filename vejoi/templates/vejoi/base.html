@@ -2,18 +2,42 @@
 <html lang="en">
 <head>
     {% block head %}
-    <link rel="stylesheet" href="style.css" />
-    <title>{% block title %}{% endblock %} - My Webpage</title>
+    <title>{% block title %}{% endblock %}</title>
+    <div class="rsp-eql-desktop">
+        <section class="topBar rsp-container">
+            <div class = "topBar-left">
+                <form action={% url 'search'%} method="GET">   
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search" name = 'srch'>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>   
+            </div>
+            <div class="topBar-right">
+                <form action={% url 'logout'%} method="GET">
+                    <input type="submit" value="Logout" name="logout"/>
+                </form>
+                <a class="btn-action plain" href="{% url 'profile' request.user.username %}">profile</a>
+                <a class="btn-action plain" href="{% url 'home'%}">home</a>
+            </div>
+        </section>
+    </div>
     {% endblock %}
 </head>
-<body>
-    <div id="content">
-        {% block content %}
-        {% endblock %}
-    </div>
-    <div id="footer">
-        {% block footer %}
-        {% endblock %}
-    </div>
+
+<body class="theme-0 dialogBody">
+    {% block content %}
+    <header id="topMenu" class="topMenu">
+        {% block header %} {% endblock %}
+    </header>
+    <main>
+        {% block main %} {% endblock %}
+    </main>
+    <footer>
+        {% block footer %} {% endblock %}
+    </footer>
+    {% endblock %}
+
 </body>
+
 </html>

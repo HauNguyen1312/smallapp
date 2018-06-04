@@ -1,4 +1,4 @@
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import DetailView, ListView, CreateView, FormView, UpdateView
@@ -18,9 +18,13 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')
-        args = {'form': form}
-        return render(request, 'vejoi/signup.html', args)
+            user = authenticate(
+                username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+            login(request, user)
+            return redirect('home')
+        else:
+            args = {'form': form}
+            return render(request, 'vejoi/signup.html', args)
 
     else:
         form = SignUpForm()
@@ -31,6 +35,18 @@ def signup(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+
+def search(request):
+    if request.method == 'GET':
+        username = request.GET['srch']
+        try:
+            User.objects.get(username=username)
+        except User.DoesNotExist:
+            return redirect(request.META.get('HTTP_REFERER','/'))
+
+        else:
+            return redirect('profile', username)
 
 
 class AnswerView(UpdateView):
