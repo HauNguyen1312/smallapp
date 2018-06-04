@@ -1,23 +1,61 @@
 {% extends 'vejoi/base.html' %}
 {% block title %} Profile {% endblock%}
 {% block content %}
-    <form action="{% url 'ask' %}" method="POST">
-        {% csrf_token %}
-        {% if user.is_authenticated %}
-            <label><b>@{{user}}</b></label>
-            <input name="name" type="hidden" value="{{user}}"/>
-            <br>
-            {{form.text}}
-        {% elif not user.is_authenticated %}
-            {{ form.as_p }}
-        {% endif %}
-        <input name="responder_id" type="hidden" value="{{ object.pk }}"/>
-        <br>
-        <button>Submit</button>
-    </form>
+    <h1>Let's askk</h1>
+    <div class="container" style="margin-top: 1%;margin-bottom: 1%">
+        <form action="{% url 'ask' %}" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-25">
+                    <label for="fname">Responder</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" style="font-weight: bold;" disabled value="@{{ user }}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="subject">Text</label>
+                </div>
+                <div class="col-75">
+                    {{ form.text }}
+                </div>
+            </div>
+            <div class="row">
+                <input type="submit" value="Submit"/>
+            </div>
+            <input name="name" type="hidden" value="{{user}}" />
+            <input name="responder_id" type="hidden" value="{{ object.pk }}" />
+        </form>
+    </div>
+    <hr>
+    <h1>Answered Questions</h1>
     {% for q in questions %}
-        {{q}}
-        {{q.answer}}
-        <br>
-    {% endfor %}  
-{% endblock%}
+    <div class="container" style="margin-top: 1%">
+            <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Asker</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" style="font-weight: bold;" disabled value="@{{ q.name }}">
+                    </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="fname">Question</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" disabled value="{{q.text}}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="subject">Response</label>
+                </div>
+                <div class="col-75">
+                        <input type="text" disabled value="{{q.answer}}">
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock%} 

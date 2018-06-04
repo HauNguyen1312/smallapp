@@ -3,37 +3,75 @@
 {% block content %}
     {% if user.is_authenticated %}
         <h1>Hello <i style="color:red">{{user}}</i></h1>
-        <form action={% url 'logout' %} method="GET">
-                {% csrf_token %}
-                <input type="submit" value="Logout" name="logout"/>
-        </form>
         {% for q in object_list %}
             {% if not q.answer or q.answer == '' %}
-                <form action="{% url 'answer' q.pk %}" method="POST">
-                {% csrf_token %}
-                {{ q.text }}
-                {{ form.as_p }}
-                <button>Submit</button>
-                </form>
+                <div class="container">
+                    <form action="{% url 'answer' q.pk %}" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                                <div class="col-25">
+                                    <label for="fname">Asker</label>
+                                </div>
+                                <div class="col-75">
+                                    <input type="text" disabled value="@{{ q.name }}">
+                                </div>
+                            </div>
+                        <div class="row">
+                            <div class="col-25">
+                                <label for="fname">Question</label>
+                            </div>
+                            <div class="col-75">
+                                <input type="text" disabled value="{{q.text}}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-25">
+                                <label for="subject">Text</label>
+                            </div>
+                            <div class="col-75">
+                                {{ form.answer }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <input type="submit" value="Submit"/>
+                        </div>
+                    </form>
+                </div>
             {% endif %}
         {% endfor %}
         <hr/>
+        <h1>Answerd Questions</h1>
         {% for q in object_list %}
             {% if q.answer and q.answer != '' %}
-                <table>
-                    <tr>
-                        <th>@{{ q.name }}</th>
-                    </tr>
-                    <tr>
-                        <td>Question</td>
-                        <td>{{ q.text }}</td>
-                    </tr>
-                    <tr>
-                        <td>Answer</td>
-                        <td>{{ q.answer }}</td>
-                    </tr>
-                </table>
+                <div class="container" style="margin-top: 1%">
+                    <div class="row">
+                            <div class="col-25">
+                                <label for="fname">Asker</label>
+                            </div>
+                            <div class="col-75">
+                                <input type="text" style="font-weight: bold;" disabled value="@{{ q.name }}">
+                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="fname">Question</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="text" disabled value="{{q.text}}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="subject">Response</label>
+                        </div>
+                        <div class="col-75">
+                                <input type="text" disabled value="{{q.answer}}">
+                        </div>
+                    </div>
+                </div>
             {% endif %}
         {% endfor %}
     {% endif %}
 {% endblock%}
+
+
