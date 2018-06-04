@@ -1,4 +1,5 @@
 Django
 psycopg2
-Jinja2
 django-model-utils
+django_extensions
+werkzeug
