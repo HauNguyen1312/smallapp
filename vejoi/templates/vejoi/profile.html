@@ -6,11 +6,12 @@
         <form action="{% url 'ask' %}" method="POST">
             {% csrf_token %}
             <div class="row">
+                 {{form.anonymous}}
                 <div class="col-25">
-                    <label for="fname">Responder</label>
+                    <label for="fname">Asker</label>
                 </div>
                 <div class="col-75">
-                    <input type="text" style="font-weight: bold;" disabled value="@{{ user }}">
+                    <input type="text" style="font-weight: bold;" disabled value="@{{ request.user }}">
                 </div>
             </div>
             <div class="row">

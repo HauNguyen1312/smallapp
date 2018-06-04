@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Question(BaseModel):
-	name = models.CharField('Name of asker', max_length=255, default = '')
+	name = models.CharField('Name of asker', max_length=255, default = '', null=True)
 	text = models.TextField('Question')
 	answer = models.TextField(blank=True, null=True)
 	responder = models.ForeignKey(

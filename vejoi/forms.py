@@ -3,7 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 from . import models
 from django import forms
 
-
 class SignUpForm(UserCreationForm):
     username = forms.CharField(
         widget=forms.TextInput(attrs={'placeholder': 'Username'}),
@@ -43,6 +42,7 @@ class SignUpForm(UserCreationForm):
         
 
 class AskingForm(forms.ModelForm):
+    anonymous = forms.BooleanField(required=False)
     class Meta:
         model = models.Question
         fields = ['name', 'text']
