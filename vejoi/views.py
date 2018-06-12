@@ -83,7 +83,7 @@ class AskView(CreateView):
         return reverse('profile', args=[User.objects.get(pk=self.object.responder_id).username])
 
     def form_valid(self, form):
-        if not self.request.POST.get('anonymous'):
+        if self.request.POST.get('anonymous'):
             form.instance.name = ""
         form.instance.responder_id = self.request.POST.get('responder_id')
         form.save()

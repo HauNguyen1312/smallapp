@@ -5,4 +5,4 @@ ADD . /codebase/
 WORKDIR /codebase
 RUN pip install -r requirements.txt
 EXPOSE 80/tcp
-CMD python3 manage.py runserver_plus 0.0.0.0:80
+CMD python3 manage.py runserver 0.0.0.0:80
